@@ -1,0 +1,18 @@
+x1=-2:0.01:1;
+y1=ones(size(x1));
+x2=1:0.01:2;
+y2=x2-2;
+x=horzcat(x1,x2);
+y=horzcat(y1,y2);
+yrev=y(length(y):-1:1);
+plot(x,(y+yrev)/2);
+xlabel('t(sec)');
+title('even component');
+ylim([-2 2]);
+set(gcf,'color','w');
+export_fig problem6c-even.pdf;
+plot(x,(y-yrev)/2);
+xlabel('t(sec)');
+title('odd component');
+ylim([-2 2]);
+export_fig problem6c-odd.pdf;

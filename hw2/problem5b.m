@@ -1,0 +1,11 @@
+t=linspace(0,10,500);
+y=exp((-log(2)/10+1i*pi).*t);
+plot(t,real(y));
+set(gcf,'color','w');
+ylabel('real(y(t))');
+xlabel('t(sec)');
+export_fig problem5b-real.pdf;
+plot(t,imag(y));
+ylabel('imag(y(t))');
+xlabel('t(sec)');
+export_fig problem5b-imag.pdf;

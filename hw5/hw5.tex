@@ -1,0 +1,149 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\begin{document}
+\title{Electrical Engineering 102, Homework 4}
+\date{November 8th, 2018}
+\author{Michael Wu\\UID: 404751542}
+\maketitle
+
+\section*{Problem 1}
+
+\paragraph{a)}
+
+The real component will contain the sine term and the imaginary component will not have a negative
+sign and contain the cosine term. Thus we have the following.
+\begin{align*}
+    \mathbb{R}(c_k)&=-\mathbb{R}(c_{-k})\\
+    \mathbb{I}(c_k)&=\mathbb{I}(c_{-k})\\
+    c_k^*&=-c_{-k}\\
+    |c_k|&=|c_{-k}|\\
+    \angle c_k&=\pi-\angle c_{-k}
+\end{align*}
+
+\paragraph{b)}
+
+\[x(t)=1+4\cos(2\pi t)\]
+We can deduce this result by first noting that the frequency is \(1\) Hz, giving us \(\omega = 2\pi\).
+Next since the DC component is 1, there must be a constant 1 added. So in the Fourier series expansion
+of \(x(t)\) we have \(c_0=1\). Also, the other term must be a cosine since the signal is even and there is
+only one positive frequency component. Finally from Parseval's theorem, we know that the total power is 9,
+so there must be coefficients \(c_{-1}^2+c_0^2+c_1^2=9\). We can make the cosine term and satisfy this
+equation by letting \(c_1=c_{-1}=2\), which corresponds to the term \(4\cos(2\pi t)\).
+
+\paragraph{c)}
+
+Assume that \(T>b-a\). Then the Fourier transform is an integral from \(a\) to \(b\), since the function is zero everywhere
+else. Similarly, the Fourier series coefficients are integrals over one period, which is the same as \(a\) to \(b\) since
+the function is zero everywhere else within the period. Thus we have that
+\[c_k=\frac{1}{T}Y\left(jk\frac{2\pi}{T}\right)\]
+
+\section*{Problem 2}
+
+\paragraph{a)}
+
+\begin{enumerate}
+    \item a, d, e
+    \item f
+    \item c, e
+    \item a, b
+    \item e
+    \item f
+    \item d
+    \item b
+\end{enumerate}
+
+\paragraph{b)}
+
+\begin{enumerate}
+    \item This is true. Convolution in the time domain corresponds to multiplication in the frequency domain. Thus the Fourier transform of the convolution must be an even and real function
+    multiplied by an imaginary and odd function. This yields an odd and imaginary function, and taking the inverse Fourier transform of this would result in a real and odd function. Hence, convolution
+    of a real and even signal and a real and odd signal is a real and odd signal.
+    \item This is true. Let our signal be \(x(t)\) and let its Fourier transform be \(F(x(t))=X(j\omega)\). From time scaling we know that \(F(x(-t))=X(-j\omega)\). Then we have
+    \[F(x(t)*x(-t))=X(j\omega)X(-j\omega)\]
+    which produces an even function. An even Fourier transform corresponds to an even input signal, thus we know that \(x(t)*x(-t)\) is even.
+\end{enumerate}
+
+\paragraph{c)}
+
+\begin{enumerate}
+    \item If \(x(t)=x^*(-t)\), we know that \(\mathbb{R}(x(t))=\mathbb{R}(x(-t))\) and \(\mathbb{I}(x(t))=-\mathbb{I}(x(-t))\). So the real component of \(x(t)\) is even and the imaginary component of \(x(t)\)
+    is odd. The Fourier transform of the real component is a real and even signal, while the Fourier transform of the imaginary component is a real and odd signal. From the linearity of the Fourier transform, we can
+    add these two components together and get the Fourier transform for \(x(t)\). Thus \(X(j\omega)\) must be real because its components are real.
+    \item We know that \(X(j\omega)=X_e(j\omega)+X_o(j\omega)\). Additionally, \(X_e(j\omega)\) must be real and even since \(x(t)\) is real. \(X_o(j\omega)\) must be imaginary and odd since \(x(t)\) is real.
+    Therefore we know that the entirety of the real component of \(X(j\omega)\) comes from \(X_e(j\omega)\), so
+    \[X_e(j\omega)=\mathbb{R}(X(j\omega))\]
+    and the entirety of the imaginary component of \(X(j\omega)\) comes from \(X_o(j\omega)\), so
+    \[X_o(j\omega)=j\mathbb{R}(X(j\omega))\]
+\end{enumerate}
+
+\section*{Problem 3}
+
+\paragraph{a)}
+
+We know that \(X(j\omega)\) is real and even. Furthermore, the integral \(\int_{-\infty}^\infty X(j\omega)\, d\omega\) is \(2\pi\) times the
+inverse Fourier transform of \(X(j\omega)\) at \(t=0\). As \(x(0)=1\), we get \(2\pi\) when evaluating the inverse Fourier transform. Since the given
+integral is over the positive side of the domain and the Fourier transform is even, we obtain a final result of \(\pi\).
+
+\paragraph{b)}
+
+This is the integral \(\int_{-\infty}^\infty x(t)\,dt\). Looking at the area under \(x(t)\), this evaluates to \(5\).
+
+\paragraph{c)}
+
+The Fourier transform is real and even. Thus \(\angle X(j\omega)=0\).
+
+\paragraph{d)}
+
+This is \(2\pi\) times the inverse Fourier transform of \(X(j\omega)\) evaluated at \(t=-1\). Because \(x(-1)=1\), this integral is \(2\pi\).
+
+\paragraph{e)}
+
+Rewriting the expression yields
+\begin{align*}
+    F^{-1}(\mathbb{R}(e^{-j3\omega}X(j\omega)))&=F^{-1}(\cos(-3\omega)X(j\omega))\\
+    &=F^{-1}\left(\frac{e^{-j3\omega} + e^{j3\omega}}{2}X(j\omega)\right)\\
+    &=\frac{1}{2}x(t-3)+\frac{1}{2}x(t+3)
+\end{align*}
+which looks like the plot below.
+\begin{center}
+    \begin{tikzpicture}[scale=0.8]
+        \begin{axis}[ymin=-0.99,ymax=0.99,xmax=6.99,xmin=-6.99,axis lines = middle]
+            \addplot[color=black,mark=none] coordinates {
+                (-7,0)
+                (-6,0)
+                (-5,0.5)
+                (-1,0.5)
+                (0,0)
+                (1,0.5)
+                (5,0.5)
+                (6,0)
+                (7,0)
+            };
+        \end{axis}
+    \end{tikzpicture}
+\end{center}
+
+\section*{Problem 4}
+
+\paragraph{a)}
+
+\begin{enumerate}
+    \item 1
+    \item 2
+    \item 3
+    \item 4
+\end{enumerate}
+
+\paragraph{b)}
+
+\paragraph{c)}
+
+\begin{enumerate}
+    \item 1
+    \item 2
+\end{enumerate}
+
+\end{document}

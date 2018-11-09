@@ -25,13 +25,13 @@ sign and contain the cosine term. Thus we have the following.
 
 \paragraph{b)}
 
-\[x(t)=1+4\cos(2\pi t)\]
+\[x(t)=1\pm4\cos(2\pi t)\]
 We can deduce this result by first noting that the frequency is \(1\) Hz, giving us \(\omega = 2\pi\).
 Next since the DC component is 1, there must be a constant 1 added. So in the Fourier series expansion
 of \(x(t)\) we have \(c_0=1\). Also, the other term must be a cosine since the signal is even and there is
 only one positive frequency component. Finally from Parseval's theorem, we know that the total power is 9,
 so there must be coefficients \(c_{-1}^2+c_0^2+c_1^2=9\). We can make the cosine term and satisfy this
-equation by letting \(c_1=c_{-1}=2\), which corresponds to the term \(4\cos(2\pi t)\).
+equation by letting \(c_1=c_{-1}=\pm 2\), which corresponds to the term \(\pm 4\cos(2\pi t)\).
 
 \paragraph{c)}
 
@@ -76,16 +76,18 @@ the function is zero everywhere else within the period. Thus we have that
     Therefore we know that the entirety of the real component of \(X(j\omega)\) comes from \(X_e(j\omega)\), so
     \[X_e(j\omega)=\mathbb{R}(X(j\omega))\]
     and the entirety of the imaginary component of \(X(j\omega)\) comes from \(X_o(j\omega)\), so
-    \[X_o(j\omega)=j\mathbb{R}(X(j\omega))\]
+    \[X_o(j\omega)=j\mathbb{I}(X(j\omega))\]
 \end{enumerate}
 
 \section*{Problem 3}
 
 \paragraph{a)}
 
-We know that \(X(j\omega)\) is real and even. Furthermore, the integral \(\int_{-\infty}^\infty X(j\omega)\, d\omega\) is \(2\pi\) times the
-inverse Fourier transform of \(X(j\omega)\) at \(t=0\). As \(x(0)=1\), we get \(2\pi\) when evaluating the inverse Fourier transform. Since the given
-integral is over the positive side of the domain and the Fourier transform is even, we obtain a final result of \(\pi\).
+We know that \(X(j\omega)\) is real and even. Furthermore, the integral
+\[\int_{-\infty}^\infty X(j\omega)\, d\omega\]
+is \(2\pi\) times the inverse Fourier transform of \(X(j\omega)\) at \(t=0\). As \(x(0)=1\), we get \(2\pi\) when evaluating
+the inverse Fourier transform. Since the given integral is over the positive side of the domain and the Fourier transform is even,
+we obtain a final result of \(\pi\).
 
 \paragraph{b)}
 
@@ -93,7 +95,8 @@ This is the integral \(\int_{-\infty}^\infty x(t)\,dt\). Looking at the area und
 
 \paragraph{c)}
 
-The Fourier transform is real and even. Thus \(\angle X(j\omega)=0\).
+The Fourier transform is real and even. Thus either \(\angle X(j\omega)=0\) or \(\angle X(j\omega)=\pi\), depending on if it is positive or negative. We cannot
+say more without explicitly finding \(X(j\omega)\) to see where it crosses the \(x\) axis.
 
 \paragraph{d)}
 
@@ -131,19 +134,62 @@ which looks like the plot below.
 \paragraph{a)}
 
 \begin{enumerate}
-    \item 1
-    \item 2
-    \item 3
-    \item 4
+    \item We can rewrite the function as follows
+    \[x_1(t)=\text{rect}\left(\frac{-t-3}{2}\right)(e^{10\pi t} + e^{-10\pi t})\]
+    The Fourier transform of the rect component is \(2e^{j3\omega}\text{sinc}\left(\frac{\omega}{\pi}\right)\). The exponential terms in the time domain modulate this Fourier transform, yielding
+    \[F(x_1(t))=2e^{j3(\omega-10\pi)}\text{sinc}\left(\frac{\omega-10\pi}{\pi}\right)+2e^{j3(\omega+10\pi)}\text{sinc}\left(\frac{\omega+10\pi}{\pi}\right)\]
+    \item We can rewrite the function as follows
+    \[x_2(t)=e^2e^{j3t}e^{-2(-t+1)}u(-t+1)\]
+    Then the last two terms gives the Fourier transform \(e^{-j\omega}\frac{1}{2-j\omega}\). The remaining exponential terms result in modulation and multiplication by a constant, yielding
+    \[F(x_2(t))=\frac{e^{2-j(\omega-3)}}{2-j(\omega-3)}\]
+    \item We have the following result.
+    \begin{align*}
+        F(x_3(t))&=\int_{-1}^1 e^{-j\omega t}\,dt + \frac{1}{2}\int_{-1}^1 e^{-j(\omega-\pi)t}\,dt + \frac{1}{2}\int_{-1}^1 e^{-j(\omega+\pi)t}\,dt\\
+        &=-\frac{e^{-j\omega}-e^{j\omega}}{j\omega} - \frac{e^{-j(\omega-\pi)}-e^{j(\omega-\pi)}}{2j(\omega-\pi)} - \frac{e^{-j(\omega+\pi)}-e^{j(\omega+\pi)}}{2j(\omega+\pi)}\\
+        &=2\frac{\sin(\omega)}{\omega}+\frac{\sin(\omega-\pi)}{\omega-\pi}+ \frac{\sin(\omega+\pi)}{\omega+\pi}\\
+        &=2\text{sinc}\left(\frac{\omega}{\pi}\right) + \text{sinc}\left(\frac{\omega}{\pi}-1\right) + \text{sinc}\left(\frac{\omega}{\pi}+1\right)
+    \end{align*}
+    \item We have the following result.
+    \begin{align*}
+        F(x_4(t))&=\int_{0}^\infty te^{-t}e^{-j\omega t}\,dt\\
+        &=\int_{0}^\infty te^{(-1-j\omega) t}\,dt\\
+        &=\left.e^{(-1-j\omega) t}\left(\frac{t}{-1-j\omega}-\frac{1}{(-1-j\omega)^2}\right)\right|_0^\infty\\
+        &=\frac{1}{(-1-j\omega)^2}
+    \end{align*}
 \end{enumerate}
 
 \paragraph{b)}
 
+\begin{align*}
+    F^{-1}(X(j\omega))&=\frac{1}{2\pi}\left(\int_{-3}^{-2} e^{-j\frac{\omega}{2}} e^{j\omega t}\,d\omega + \int_{-2}^2 \frac{1}{2}e^{-j\frac{\omega}{2}} e^{j\omega t}\,d\omega
+    + \int_2^3 e^{-j\frac{\omega}{2}} e^{j\omega t}\,d\omega\right)\\
+    &=\frac{1}{2\pi}\left(\int_{-3}^{-2} e^{j\omega \left(t-\frac{1}{2}\right)}\,d\omega + \int_{-2}^2 \frac{1}{2}e^{j\omega \left(t-\frac{1}{2}\right)}\,d\omega
+    + \int_2^3 e^{j\omega \left(t-\frac{1}{2}\right)}\,d\omega\right)\\
+    &=\frac{1}{2\pi}\left(\left.\frac{e^{j\omega \left(t-\frac{1}{2}\right)}}{j\left(t-\frac{1}{2}\right)}\right|_{-3}^{-2}
+    + \frac{1}{2}\left.\frac{e^{j\omega \left(t-\frac{1}{2}\right)}}{j\left(t-\frac{1}{2}\right)}\right|_{-2}^2
+    + \left.\frac{e^{j\omega \left(t-\frac{1}{2}\right)}}{j\left(t-\frac{1}{2}\right)}\right|_2^3\right)\\
+    &=\frac{1}{2\pi j\left(t-\frac{1}{2}\right)}\left(-e^{-j3\left(t-\frac{1}{2}\right)}+\frac{1}{2}e^{-j2\left(t-\frac{1}{2}\right)}-\frac{1}{2}e^{j2\left(t-\frac{1}{2}\right)}
+    +e^{j3\left(t-\frac{1}{2}\right)}\right)\\
+    &=\frac{\sin\left(3\left(t-\frac{1}{2}\right)\right)-\frac{1}{2}\sin\left(2\left(t-\frac{1}{2}\right)\right)}{\pi\left(t-\frac{1}{2}\right)}\\
+    &=\frac{3}{\pi}\text{sinc}\left(\frac{3}{\pi}\left(t-\frac{1}{2}\right)\right)-\frac{1}{\pi}\text{sinc}\left(\frac{2}{\pi}\left(t-\frac{1}{2}\right)\right)
+\end{align*}
+
 \paragraph{c)}
 
 \begin{enumerate}
-    \item 1
-    \item 2
+    \item Based on duality we have that
+    \[F_1(j\omega)=\frac{1}{2}\text{rect}\left(\frac{\omega}{4\pi}\right)\]
+    Additionally, using duality and modulation we have that
+    \[F_2(j\omega)=\frac{1}{2}\left(\text{rect}\left(\frac{\omega-3\pi}{2\pi}\right)+\text{rect}\left(\frac{\omega+3\pi}{2\pi}\right)\right)\]
+    Applying the convolution theorem gives us
+    \[F(j\omega)=\frac{1}{4}\text{rect}\left(\frac{\omega}{4\pi}\right)\left(\text{rect}\left(\frac{\omega-3\pi}{2\pi}\right)+\text{rect}\left(\frac{\omega+3\pi}{2\pi}\right)\right)\]
+    This is zero everywhere except \(\omega=-2\pi\) and \(\omega=2\pi\), since the outer rect goes from \(-2\pi\) to \(2\pi\), while the other two rects go from \(-4\pi\) to \(-2\pi\) and
+    \(2\pi\) to \(4\pi\). So we can also write
+    \[F(j\omega)=\begin{cases}
+        \frac{1}{4} & \omega=\pm 2\pi\\
+        0 & \text{else}
+    \end{cases}\]
+    \item Since the inverse Fourier transform is an integral of a function that is zero everywhere except at a finite number of points, it must be zero. So we have \(f(t)=0\).
 \end{enumerate}
 
 \end{document}

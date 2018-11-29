@@ -29,7 +29,7 @@ Then using Parseval's theorem this integral is equivalent to
 \paragraph{b)}
 
 Based on duality we have
-\[F[F[f(t)]]=2\pi f(-t)\]
+\[\mathcal{F}[\mathcal{F}[f(t)]]=2\pi f(-t)\]
 Then applying the fourier transform four times should yield \(4\pi^2 f(t)\). Thus we have that
 \[y(t)=4\pi^2x(t)\]
 
@@ -37,25 +37,120 @@ Then applying the fourier transform four times should yield \(4\pi^2 f(t)\). Thu
 
 \paragraph{a)}
 
-
+\begin{enumerate}
+    \item We know that \(y(t)=h(t)*x(t)\). Taking the Fourier transform of the system yields the following.
+    \begin{align*}
+        \mathcal{F}[y^{\prime\prime}(t)+6y^\prime(t)+8y(t)]&=\mathcal{F}[3x(t)]\\
+        \mathcal{F}[h(t)*x(t)](-\omega^2+j6\omega+8)&=3\mathcal{F}[x(t)]\\
+        \mathcal{F}[h(t)]\mathcal{F}[x(t)](-\omega^2+j6\omega+8)&=3\mathcal{F}[x(t)]\\
+        \mathcal{F}[h(t)]&=\frac{3}{-\omega^2+j6\omega+8}\\
+        \mathcal{F}[h(t)]&=\frac{3}{2(2+j\omega)}-\frac{3}{2(4+j\omega)}
+    \end{align*}
+    So our frequency response is
+    \[H(j\omega)=\frac{3}{2(2+j\omega)}-\frac{3}{2(4+j\omega)}\]
+    \item We know that \(y(t)=h_2(t)*y_1(t)\). Then plugging in the given \(y(t)\) and \(y_1(t)\) and taking the Fourier transform yields the following.
+    \begin{align*}
+        \mathcal{F}[(4e^{-t}-4e^{-4t})u(t)]&=\mathcal{F}[h_2(t)*(2e^{-t}u(t))]\\
+        \frac{4}{1+j\omega}-\frac{4}{4+j\omega}&=\mathcal{F}[h_2(t)]\left(\frac{2}{1+j\omega}\right)\\
+        \mathcal{F}[h_2(t)]&=2-\frac{2+j2\omega}{4+j\omega}\\
+        \mathcal{F}[h_2(t)]&=\frac{6}{4+j\omega}
+    \end{align*}
+    So our frequency response is
+    \[H_2(j\omega)=\frac{6}{4+j\omega}\]
+    We also know that \(H(j\omega)=H_1(j\omega)H_2(j\omega)\), so we can solve for \(H_1(j\omega)\) as follows.
+    \begin{align*}
+        H_1(j\omega)\frac{6}{4+j\omega}&=\frac{2}{3(2+j\omega)}-\frac{2}{3(4+j\omega)}\\
+        H_1(j\omega)\frac{6}{4+j\omega}&=\frac{3}{-\omega^2+j6\omega+8}\\
+        H_1(j\omega)&=\frac{1}{2(2+j\omega)}
+    \end{align*}
+    \item Using the inverse Fourier transform rule for \(e^{-at}u(t)\) we obtain the following impulse responses.
+    \begin{align*}
+        h(t)&=\frac{3}{2}(e^{-2t}-e^{-4t})u(t)\\
+        h_1(t)&=\frac{1}{2}e^{-2t}u(t)\\
+        h_2(t)&=6e^{-4t}u(t)
+    \end{align*}
+\end{enumerate}
 
 \paragraph{b)}
 
+No, \(y(t)\) cannot have frequency components different than those of \(x(t)\). This is because the system is LTI, so it can be expressed
+as a convolution integral \(h(t)*x(t)\). This corresponds to multiplication in the frequency domain. Then since \(X(j\omega)\) is zero
+for \(|\omega|>\omega_0\), \(Y(j\omega)\) must also be zero for \(|\omega|>\omega_0\). If we process \(x(t)\) through a non-LTI system then
+yes, \(y(t)\) can have frequency components different than those of \(x(t)\). Consider the system \(y(t)=x(t)+\cos(2\omega_0 t)\) which has
+\(Y(j\omega)\neq 0\) for \(|2\omega_0|>\omega_0\).
+
 \paragraph{c)}
+
+The Fourier transform of \(x(t)\) can be found by applying the modulation rule twice, while the Fourier transform of \(h_1(t)\) can be found using
+the Fourier transform of \(\text{sinc}(at)\) and modulation. Then we can calculate the result of the first system by doing the following.
+\begin{align*}
+    y_1(t)&=x(t)*h_1(t)\\
+    Y_1(j\omega)&=X(j\omega)H_1(j\omega)\\
+    Y_1(j\omega)&=\frac{\pi}{2}(\delta(\omega-7\pi)+\delta(\omega-\pi)+\delta(\omega+\pi)+\delta(\omega+7\pi))\times\\
+    &\qquad\left(\text{rect}\left(\frac{\omega-\pi}{\pi}\right)+\text{rect}\left(\frac{\omega+\pi}{\pi}\right)\right)\\
+    Y_1(j\omega)&=\frac{\pi}{2}(\delta(\omega-\pi)+\delta(\omega+\pi))\\
+    y_1(t)&=\frac{\cos(\pi t)}{2}
+\end{align*}
+The Fourier transform of \(h_2(t)\) can be found using the Fourier transform of \(\text{sinc}(at)\). Then we can calculate the result of the second system by doing the following.
+\begin{align*}
+    y_2(t)&=x(t)*h_2(t)\\
+    Y_2(j\omega)&=X(j\omega)H_2(j\omega)\\
+    Y_2(j\omega)&=\frac{\pi}{2}(\delta(\omega-7\pi)+\delta(\omega-\pi)+\delta(\omega+\pi)+\delta(\omega+7\pi))\text{rect}\left(\frac{\omega}{4\pi}\right)\\
+    Y_2(j\omega)&=\frac{\pi}{2}(\delta(\omega-\pi)+\delta(\omega+\pi))\\
+    y_2(t)&=\frac{\cos(\pi t)}{2}
+\end{align*}
+If we are given an input-output pair for an unknown LTI system then we cannot always identify this system uniquely. For example, if we are given the input \(x(t)=\cos(3\pi t)\cos(4\pi t)\)
+and the output \(y(t)=\frac{\cos(\pi t)}{2}\), the results above indicate that our LTI system could be characterized by either \(h_1(t)\) or \(h_2(t)\) as impulse responses.
 
 \section*{Problem 3}
 
 \paragraph{a)}
 
+We should set \(\alpha=-1\). This way the lower frequencies cancel out the frequencies that pass through the low pass filter. This has the effect of making the high pass filter multiply the strength
+of the signal by \(-1\) as well as filtering, so the frequency response of the high pass filter has a phase of \(\pi\).
+
 \paragraph{b)}
+
+Ideal filters are non-realizable systems because the impulse response of an ideal filter is a sinc function which always has some nonzero component as time goes to positive or negative infinity.
+In other words, the impulse response is non-causal and never dies out. So when processing a real signal, we cannot look in the future to take into account the non-causality of the impulse response. We also
+cannot process a signal for infinitely long, as that would require infinite resources and the universe only has finite resources.
 
 \paragraph{c)}
 
+In order to have unity at \(\omega=0\) we must set \(k=\beta\). The magnitude of the frequency response is equal to
+\begin{align*}
+    \left|\frac{k}{\beta+j\omega}\right|&=\left|\frac{1}{\beta^2+\omega^2}(k\beta-jk\omega)\right|\\
+    &=\frac{k\sqrt{\beta^2+\omega^2}}{\beta^2+\omega^2}\\
+    &=\frac{k}{\sqrt{\beta^2+\omega^2}}
+\end{align*}
+So we need to solve the following equation in order to set the cutoff frequency.
+\begin{align*}
+    \frac{k}{\sqrt{\beta^2+(2\pi)^2}}&=\frac{1}{\sqrt{2}}\\
+    k&=\sqrt{\frac{\beta^2+(2\pi)^2}{2}}\\
+    k^2&=\frac{\beta^2+(2\pi)^2}{2}\\
+    2k^2&=\beta^2+(2\pi)^2\\
+    2k^2&=k^2+(2\pi)^2\\
+    k^2&=(2\pi)^2\\
+    k&=2\pi
+\end{align*}
+Thus we obtain the result \(k=2\pi\) and \(\beta=2\pi\).
+
 \paragraph{d)}
+
+The system \(\alpha x(t)\) is equivalent to \((\alpha\delta(t))*x(t)\). The frequency response of \(\alpha\delta(t)\) is equal to \(\alpha\), thus by linearity we obtain the frequency response of the high pass filter as
+\[H(j\omega)=\frac{2\pi}{2\pi+j\omega}-1\]
+This is a non ideal high pass filter that shifts the signal through a phase of \(\pi\), since it tends to minimize low frequency signals while it multiplies the by \(-1\). High frequency signals come through at almost full
+strength, except they are opposite in phase.
 
 \section*{Problem 4}
 
 \paragraph{a)}
+
+\begin{enumerate}
+    \item 1
+    \item 2
+    \item 3
+\end{enumerate}
 
 \paragraph{b)}
 
